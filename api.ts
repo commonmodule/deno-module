@@ -30,7 +30,7 @@ export interface Context {
 
 type Middleware = (ctx: Context) => Promise<void>;
 
-export function startServer(middlewares: Middleware[]) {
+export function startServer(...middlewares: Middleware[]) {
   serve(async (req) => {
     if (req.method === "OPTIONS") return response("ok");
     for (const middleware of middlewares) {
