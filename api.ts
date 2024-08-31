@@ -23,19 +23,25 @@ function responseError(errorMessage: string) {
   });
 }
 
-export function serveWithOptions(
-  handler: (req: Request) => Promise<Response | void>,
-) {
+export interface Context {
+  request: Request;
+  response: Response | undefined;
+}
+
+type Middleware = (ctx: Context) => Promise<void>;
+
+export function startServer(middlewares: Middleware[]) {
   serve(async (req) => {
-    if (req.method === "OPTIONS") {
-      return response("ok");
+    if (req.method === "OPTIONS") return response("ok");
+    for (const middleware of middlewares) {
+      const ctx = { request: req, response: undefined };
+      try {
+        await middleware(ctx);
+      } catch (error) {
+        return responseError(error.message);
+      }
+      if (ctx.response) return ctx.response;
     }
-    try {
-      const result = await handler(req);
-      if (result) return result;
-      return response({});
-    } catch (error) {
-      return responseError(error.message);
-    }
+    return response({});
   });
 }
