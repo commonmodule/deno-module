@@ -35,11 +35,7 @@ export function startServer(...middlewares: Middleware[]) {
     if (req.method === "OPTIONS") return response("ok");
     for (const middleware of middlewares) {
       const ctx = { request: req, response: undefined };
-      try {
-        await middleware(ctx);
-      } catch (error) {
-        return responseError(error.message);
-      }
+      await middleware(ctx);
       if (ctx.response) return ctx.response;
     }
     return response({});
