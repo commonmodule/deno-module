@@ -3,7 +3,7 @@ import {
   ElFunction,
 } from "https://raw.githubusercontent.com/yjgaia/universal-page-module/refs/heads/main/src/mod.ts";
 
-export const el: ElFunction<string, string> = function (
+export const el: ElFunction<string> = function (
   selector: DomSelector,
   ...children: string[]
 ): string {
