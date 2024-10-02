@@ -35,20 +35,18 @@ export function el<S extends DomSelector>(
   selector: S,
   ...children: DomChild<S>[]
 ): string {
-  const [tagName, idAndClasses] = selector.split(/(?=[#.])/);
-  const tag = tagName || "div";
+  const parts = (selector || "div").split(/([#.])/);
+  const tag = parts[0] || "div";
+
   let id = "";
   const classes: string[] = [];
 
-  if (idAndClasses) {
-    const parts = idAndClasses.split(".");
-    parts.forEach((part) => {
-      if (part.startsWith("#")) {
-        id = part.slice(1);
-      } else {
-        classes.push(part);
-      }
-    });
+  let currentType: "#" | "." | "" = "";
+  for (let i = 1; i < parts.length; i += 2) {
+    currentType = parts[i] as "#" | ".";
+    const value = parts[i + 1];
+    if (currentType === "#") id = value;
+    else if (currentType === ".") classes.push(value);
   }
 
   let attributes = "";
