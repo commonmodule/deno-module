@@ -1,6 +1,6 @@
 import {
   DomSelector,
-  Tag
+  Tag,
 } from "https://raw.githubusercontent.com/yjgaia/universal-page-module/refs/heads/main/src/mod.ts";
 
 type InferElementTypeByTag<TT extends Tag | string> = TT extends ""
@@ -59,7 +59,28 @@ export function el<S extends DomSelector>(
     attributes += ` class="${classes.join(" ")}"`;
   }
 
-  const childrenContent = children.join("");
+  let childrenContent = "";
+
+  for (const child of children) {
+    if (child === undefined) continue;
+    else if (typeof child === "string") {
+      childrenContent += child;
+    } else {
+      for (const key in child) {
+        if (key === "style") {
+          let style = "";
+          for (const styleKey in child.style) {
+            style += `${styleKey}:${
+              child.style[styleKey as keyof typeof child.style]
+            };`;
+          }
+          attributes += ` style="${style}"`;
+        } else {
+          attributes += ` ${key}="${child[key as keyof typeof child]}"`;
+        }
+      }
+    }
+  }
 
   return `<${tag}${attributes}>${childrenContent}</${tag}>`;
 }
