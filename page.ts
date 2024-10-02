@@ -35,3 +35,26 @@ export const el: ElFunction<string> = function (
 
   return `<${tag}${attributes}>${childrenContent}</${tag}>`;
 };
+
+export function createPage(options: {
+  title: string;
+  cssFiles: string[];
+}, ...children: string[]): string {
+  return `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+  <title>${options.title}</title>
+  ${
+    options.cssFiles.map((file) =>
+      `<link rel="stylesheet" type="text/css" href="${file}" />`
+    ).join("\n")
+  }
+</head>
+<body>
+  ${children.join("\n")}
+</body>
+</html>`;
+}
