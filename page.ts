@@ -1,11 +1,39 @@
 import {
   DomSelector,
-  ElFunction,
+  Tag
 } from "https://raw.githubusercontent.com/yjgaia/universal-page-module/refs/heads/main/src/mod.ts";
 
-export const el: ElFunction<string> = function (
-  selector: DomSelector,
-  ...children: string[]
+type InferElementTypeByTag<TT extends Tag | string> = TT extends ""
+  ? HTMLDivElement
+  : (
+    TT extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[TT]
+      : HTMLElement
+  );
+
+type InferElementType<EOS extends DomSelector> = EOS extends "" ? HTMLDivElement
+  : (
+    EOS extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[EOS]
+      : (
+        EOS extends `${infer TT}#${string}` ? InferElementTypeByTag<TT>
+          : (
+            EOS extends `${infer TT}.${string}` ? InferElementTypeByTag<TT>
+              : HTMLElement
+          )
+      )
+  );
+
+type ElementProperties<EOS extends DomSelector> =
+  & Partial<Omit<InferElementType<EOS>, "style">>
+  & { style?: Partial<CSSStyleDeclaration> };
+
+type DomChild<EOS extends DomSelector = DomSelector> =
+  | ElementProperties<InferElementType<EOS>>
+  | string
+  | undefined;
+
+export function el<S extends DomSelector>(
+  selector: S,
+  ...children: DomChild<S>[]
 ): string {
   const [tagName, idAndClasses] = selector.split(/(?=[#.])/);
   const tag = tagName || "div";
@@ -34,7 +62,7 @@ export const el: ElFunction<string> = function (
   const childrenContent = children.join("");
 
   return `<${tag}${attributes}>${childrenContent}</${tag}>`;
-};
+}
 
 export function createPage(options: {
   title: string;
