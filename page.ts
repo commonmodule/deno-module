@@ -1,7 +1,7 @@
 import {
   DomSelector,
   Tag,
-} from "https://raw.githubusercontent.com/yjgaia/universal-page-module//main/src/mod.ts";
+} from "https://raw.githubusercontent.com/yjgaia/universal-page-module/main/src/mod.ts";
 
 type InferElementTypeByTag<TT extends Tag | string> = TT extends ""
   ? HTMLDivElement
