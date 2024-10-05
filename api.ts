@@ -16,13 +16,6 @@ export function response(data: string | object) {
   });
 }
 
-function responseError(errorMessage: string) {
-  return new Response(errorMessage, {
-    status: 500,
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
-}
-
 export interface Context {
   request: Request;
   response: Response | undefined;
@@ -38,6 +31,6 @@ export function startServer(...middlewares: Middleware[]) {
       await middleware(ctx);
       if (ctx.response) return ctx.response;
     }
-    return response({});
+    throw new Error("Not found");
   });
 }
