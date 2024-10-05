@@ -31,6 +31,6 @@ export function startServer(...middlewares: Middleware[]) {
       await middleware(ctx);
       if (ctx.response) return ctx.response;
     }
-    throw new Error("Not found");
+    throw new Error(`Not found: ${req.url}`);
   });
 }
