@@ -10,7 +10,7 @@ export const corsHeaders = {
 export function serve(handler: (req: Request) => Promise<string | object>) {
   denoServe(async (req) => {
     if (req.method === "OPTIONS") {
-      return new Response("ok", { headers: corsHeaders });
+      return new Response("OK", { headers: corsHeaders });
     }
     const result = await handler(req);
     if (typeof result === "string") {
