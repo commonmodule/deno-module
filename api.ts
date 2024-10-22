@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { serve as denoServe } from "https://deno.land/std@0.168.0/http/server.ts";
 
 export const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -7,30 +7,18 @@ export const corsHeaders = {
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
 };
 
-export function response(data: string | object) {
-  if (typeof data === "string") {
-    return new Response(data, { headers: corsHeaders });
-  }
-  return new Response(JSON.stringify(data), {
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
-}
-
-export interface Context {
-  request: Request;
-  response: Response | undefined;
-}
-
-type Middleware = (ctx: Context) => Promise<void>;
-
-export function startServer(...middlewares: Middleware[]) {
-  serve(async (req) => {
-    if (req.method === "OPTIONS") return response("ok");
-    for (const middleware of middlewares) {
-      const ctx = { request: req, response: undefined };
-      await middleware(ctx);
-      if (ctx.response) return ctx.response;
+export function serve(handler: (req: Request) => Promise<string | object>) {
+  denoServe(async (req) => {
+    if (req.method === "OPTIONS") {
+      return new Response("ok", { headers: corsHeaders });
     }
-    throw new Error(`Not found: ${req.url}`);
+    const result = await handler(req);
+    if (typeof result === "string") {
+      return new Response(result, { headers: corsHeaders });
+    } else {
+      return new Response(JSON.stringify(result), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
   });
 }
