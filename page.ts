@@ -86,6 +86,7 @@ export function el<S extends DomSelector>(
 export function createPage(options: {
   title: string;
   cssFiles: string[];
+  gtagId?: string;
 }, ...children: string[]): string {
   return `<!DOCTYPE html>
 <html>
@@ -98,6 +99,19 @@ export function createPage(options: {
     options.cssFiles.map((file) =>
       `<link rel="stylesheet" type="text/css" href="${file}" />`
     ).join("\n")
+  }
+  ${
+    options.gtagId
+      ? `<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=${options.gtagId}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '${options.gtagId}');
+</script>`
+      : ""
   }
 </head>
 <body>
