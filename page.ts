@@ -1,7 +1,10 @@
-import {
-  DomSelector,
-  Tag,
-} from "https://raw.githubusercontent.com/yjgaia/universal-page-module/main/src/mod.ts";
+type Tag = "" | keyof HTMLElementTagNameMap;
+
+type DomSelector =
+  | Tag
+  | `${Tag}#${string}`
+  | `${Tag}.${string}`
+  | `${Tag}#${string}.${string}`;
 
 type InferElementTypeByTag<TT extends Tag | string> = TT extends ""
   ? HTMLDivElement
