@@ -2,7 +2,7 @@ import {
   DomChild,
   DomSelector,
   el as UniversalEl,
-} from "https://raw.githubusercontent.com/yjgaia/universal-page-module/main/src/mod.ts";
+} from "https://raw.githubusercontent.com/yjgaia/universal-page-module/refs/heads/main/src/mod.ts";
 
 export function el<S extends DomSelector>(
   selector: S,
