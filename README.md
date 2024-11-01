@@ -9,4 +9,7 @@ deno run --allow-net --allow-read --watch test/entrypoint.ts
 ```
 deno cache --reload https://raw.githubusercontent.com/yjgaia/deno-module/main/api.ts
 rm deno.lock
+
+deno cache --reload https://raw.githubusercontent.com/yjgaia/deno-module/main/page.ts
+rm deno.lock
 ```

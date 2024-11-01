@@ -88,6 +88,7 @@ export function el<S extends DomSelector>(
 
 export function createPage(options: {
   title: string;
+  jsFiles?: string[];
   cssFiles: string[];
   gtagId?: string;
 }, ...children: string[]): string {
@@ -119,6 +120,13 @@ export function createPage(options: {
 </head>
 <body>
   ${children.join("\n")}
+  ${
+    options.jsFiles
+      ? options.jsFiles.map((file) => `<script src="${file}"></script>`).join(
+        "\n",
+      )
+      : ""
+  }
 </body>
 </html>`;
 }
