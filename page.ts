@@ -1,38 +1,8 @@
-type Tag = "" | keyof HTMLElementTagNameMap;
-
-type DomSelector =
-  | Tag
-  | `${Tag}#${string}`
-  | `${Tag}.${string}`
-  | `${Tag}#${string}.${string}`;
-
-type InferElementTypeByTag<TT extends Tag | string> = TT extends ""
-  ? HTMLDivElement
-  : (
-    TT extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[TT]
-      : HTMLElement
-  );
-
-type InferElementType<EOS extends DomSelector> = EOS extends "" ? HTMLDivElement
-  : (
-    EOS extends keyof HTMLElementTagNameMap ? HTMLElementTagNameMap[EOS]
-      : (
-        EOS extends `${infer TT}#${string}` ? InferElementTypeByTag<TT>
-          : (
-            EOS extends `${infer TT}.${string}` ? InferElementTypeByTag<TT>
-              : HTMLElement
-          )
-      )
-  );
-
-type ElementProperties<EOS extends DomSelector> =
-  & Partial<Omit<InferElementType<EOS>, "style">>
-  & { style?: Partial<CSSStyleDeclaration> };
-
-type DomChild<EOS extends DomSelector = DomSelector> =
-  | ElementProperties<InferElementType<EOS>>
-  | string
-  | undefined;
+import {
+  DomChild,
+  DomSelector,
+  el as UniversalEl,
+} from "https://raw.githubusercontent.com/yjgaia/universal-page-module/main/src/mod.ts";
 
 export function el<S extends DomSelector>(
   selector: S,
@@ -85,6 +55,8 @@ export function el<S extends DomSelector>(
 
   return `<${tag}${attributes}>${childrenContent}</${tag}>`;
 }
+
+UniversalEl.impl = el;
 
 export function createPage(options: {
   title: string;
