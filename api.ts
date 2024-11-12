@@ -22,6 +22,7 @@ export function serve(handler: (req: Request) => Promise<string | object>) {
         });
       }
     } catch (e: any) {
+      console.error(e);
       return new Response(e.message, { status: 500, headers: corsHeaders });
     }
   });
