@@ -1,7 +1,7 @@
 import {
   DomChild,
   DomSelector,
-} from "https://raw.githubusercontent.com/yjgaia/universal-page-module/refs/heads/main/src/mod.ts";
+} from "https://raw.githubusercontent.com/yjgaia/universal-page-module/refs/heads/main/deno/mod.ts";
 
 export function el<S extends DomSelector>(
   selector: S,
