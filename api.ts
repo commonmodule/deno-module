@@ -12,18 +12,13 @@ export function serve(handler: (req: Request) => Promise<string | object>) {
     if (req.method === "OPTIONS") {
       return new Response("OK", { headers: corsHeaders });
     }
-    try {
-      const result = await handler(req);
-      if (typeof result === "string") {
-        return new Response(result, { headers: corsHeaders });
-      } else {
-        return new Response(JSON.stringify(result), {
-          headers: { ...corsHeaders, "Content-Type": "application/json" },
-        });
-      }
-    } catch (e: any) {
-      console.error(e);
-      return new Response(e.message, { status: 500, headers: corsHeaders });
+    const result = await handler(req);
+    if (typeof result === "string") {
+      return new Response(result, { headers: corsHeaders });
+    } else {
+      return new Response(JSON.stringify(result), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
   });
 }
