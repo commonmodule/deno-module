@@ -15,12 +15,7 @@ export function serve(
       return new Response("OK", { headers: corsHeaders });
     }
 
-    let ip;
-    if (connInfo.remoteAddr instanceof Deno.NetAddr) {
-      ip = connInfo.remoteAddr.hostname;
-    }
-
-    const result = await handler(req, ip);
+    const result = await handler(req, (connInfo.remoteAddr as any)?.hostname);
     if (typeof result === "string") {
       return new Response(result, { headers: corsHeaders });
     } else {
