@@ -7,12 +7,20 @@ export const corsHeaders = {
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
 };
 
-export function serve(handler: (req: Request) => Promise<string | object>) {
-  denoServe(async (req) => {
+export function serve(
+  handler: (req: Request, ip: string | undefined) => Promise<string | object>,
+) {
+  denoServe(async (req, connInfo) => {
     if (req.method === "OPTIONS") {
       return new Response("OK", { headers: corsHeaders });
     }
-    const result = await handler(req);
+
+    let ip;
+    if (connInfo.remoteAddr instanceof Deno.NetAddr) {
+      ip = connInfo.remoteAddr.hostname;
+    }
+
+    const result = await handler(req, ip);
     if (typeof result === "string") {
       return new Response(result, { headers: corsHeaders });
     } else {
