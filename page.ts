@@ -40,9 +40,9 @@ export function el<S extends DomSelector>(
         if (key === "style") {
           let style = "";
           for (const styleKey in child.style) {
-            style += `${styleKey}:${
-              child.style[styleKey as keyof typeof child.style]
-            };`;
+            style += `${
+              styleKey.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`)
+            }:${child.style[styleKey as keyof typeof child.style]};`;
           }
           attributes += ` style="${style}"`;
         } else {
