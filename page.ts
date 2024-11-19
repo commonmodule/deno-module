@@ -60,6 +60,7 @@ export function createPage(options: {
   jsFiles?: string[];
   cssFiles: string[];
   gtagId?: string;
+  viewTransition?: boolean;
 }, ...children: string[]): string {
   return `<!DOCTYPE html>
 <html>
@@ -67,6 +68,11 @@ export function createPage(options: {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+  ${
+    options.viewTransition
+      ? '<meta name="view-transition" content="same-origin" />'
+      : ""
+  }
   <title>${options.title}</title>
   ${
     options.cssFiles.map((file) =>
