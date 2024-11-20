@@ -57,6 +57,7 @@ export function el<S extends DomSelector>(
 
 export function createPage(options: {
   title: string;
+  suffix?: string;
   description?: string;
   coverImageURL?: string;
   jsFiles?: string[];
@@ -105,7 +106,9 @@ export function createPage(options: {
       ? '<meta name="view-transition" content="same-origin" />'
       : ""
   }
-  <title>${options.title}</title>
+  <title>${
+    options.title + (options.suffix ? ` | ${options.suffix}` : "")
+  }</title>
   ${
     options.cssFiles.map((file) =>
       `<link rel="stylesheet" type="text/css" href="${file}" />`
