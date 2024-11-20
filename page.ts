@@ -83,7 +83,7 @@ export function createPage(options: {
     ? `\n<meta name="twitter:description" content="${options.description}">`
     : "";
   twitterTags += options.twitterHandle
-    ? `\n<meta name="twitter:site" content="@${options.twitterHandle}">`
+    ? `\n<meta name="twitter:site" content="${options.twitterHandle}">`
     : "";
 
   return `<!DOCTYPE html>
