@@ -22,8 +22,10 @@ export function serve(
       return new Response(JSON.stringify(result), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
-    } else {
+    } else if (result !== undefined && result !== null) {
       return new Response(String(result), { headers: corsHeaders });
+    } else {
+      return new Response("", { headers: corsHeaders });
     }
   });
 }
