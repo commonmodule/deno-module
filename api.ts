@@ -18,10 +18,12 @@ export function serve(
     const result = await handler(req, (connInfo.remoteAddr as any)?.hostname);
     if (typeof result === "string") {
       return new Response(result, { headers: corsHeaders });
-    } else {
+    } else if (typeof result === "object") {
       return new Response(JSON.stringify(result), {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    } else {
+      return new Response(String(result), { headers: corsHeaders });
     }
   });
 }
