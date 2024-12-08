@@ -15,7 +15,7 @@ export function serve(
       return new Response("OK", { headers: corsHeaders });
     }
 
-    let ip = req.headers.get("x-forwarded-for");
+    let ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim();
     if (!ip) ip = (connInfo.remoteAddr as any)?.hostname ?? "";
 
     // IPv6 to IPv4
