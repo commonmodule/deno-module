@@ -15,7 +15,15 @@ export function serve(
       return new Response("OK", { headers: corsHeaders });
     }
 
-    const result = await handler(req, (connInfo.remoteAddr as any)?.hostname);
+    let ip = req.headers.get("x-forwarded-for");
+    if (!ip) ip = (connInfo.remoteAddr as any)?.hostname ?? "";
+
+    // IPv6 to IPv4
+    if (ip!.substring(0, 7) === "::ffff:") {
+      ip = ip!.substring(7);
+    }
+
+    const result = await handler(req, ip!);
     if (typeof result === "string") {
       return new Response(result, { headers: corsHeaders });
     } else if (typeof result === "object") {
