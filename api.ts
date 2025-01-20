@@ -11,7 +11,7 @@ export function serve(
   handler: (
     req: Request,
     ip: string | undefined,
-  ) => string | object | Promise<string | object>,
+  ) => string | object | undefined | Promise<string | object | undefined>,
 ) {
   denoServe(async (req, connInfo) => {
     if (req.method === "OPTIONS") {
