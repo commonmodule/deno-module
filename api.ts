@@ -8,7 +8,10 @@ export const corsHeaders = {
 };
 
 export function serve(
-  handler: (req: Request, ip: string | undefined) => Promise<string | object>,
+  handler: (
+    req: Request,
+    ip: string | undefined,
+  ) => string | object | Promise<string | object>,
 ) {
   denoServe(async (req, connInfo) => {
     if (req.method === "OPTIONS") {
