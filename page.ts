@@ -34,7 +34,7 @@ export function el<S extends DomSelector>(
   for (const child of children) {
     if (child === undefined) continue;
     else if (typeof child === "string") {
-      childrenContent += child;
+      childrenContent += child.replace("\n", "<br>");
     } else {
       for (const key in child) {
         if (key === "style") {
