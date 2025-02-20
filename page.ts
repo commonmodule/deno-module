@@ -61,7 +61,7 @@ export function createPage(options: {
   description?: string;
   coverImageURL?: string;
   jsFiles?: string[];
-  cssFiles: string[];
+  cssFiles?: string[];
   gtagId?: string;
   viewTransition?: boolean;
   twitterHandle?: string;
@@ -110,9 +110,11 @@ export function createPage(options: {
     options.title + (options.suffix ? ` | ${options.suffix}` : "")
   }</title>
   ${
-    options.cssFiles.map((file) =>
-      `<link rel="stylesheet" type="text/css" href="${file}" />`
-    ).join("\n")
+    options.cssFiles
+      ? options.cssFiles.map((file) =>
+        `<link rel="stylesheet" type="text/css" href="${file}" />`
+      ).join("\n")
+      : ""
   }
   ${
     options.gtagId
